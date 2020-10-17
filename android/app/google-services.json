@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1080237705600",
+    "firebase_url": "https://fluttershare-4f95c.firebaseio.com",
+    "project_id": "fluttershare-4f95c",
+    "storage_bucket": "fluttershare-4f95c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080237705600:android:6e654acc90387309929965",
+        "android_client_info": {
+          "package_name": "com.vedatermis.fluttershare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080237705600-sfctrjeogaqkq74ktbr29uss2vgr7jo7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0PeWyM7mNjR8RORuo3uHekyUngjjnxvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080237705600-sfctrjeogaqkq74ktbr29uss2vgr7jo7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
