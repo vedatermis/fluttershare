@@ -37,13 +37,13 @@ class _HomeState extends State<Home> {
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
     }, onError: (error) {
-      //print("Error when signin: $error");
+      print("Error when signin: $error");
     });
 
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
       handleSignIn(account);
     }).catchError((error) {
-      //print("Error when signin: $error");
+      print("Error when signin: $error");
     });
   }
 
@@ -67,7 +67,6 @@ class _HomeState extends State<Home> {
   }
 
   void createUserInFirestore() async {
-
     await Firebase.initializeApp();
     final GoogleSignInAccount user = googleSignIn.currentUser;
 
@@ -88,14 +87,12 @@ class _HomeState extends State<Home> {
       });
 
       doc = await usersRef.doc(user.id).get();
-
     }
 
     currentUser = User.fromDocument(doc);
 
     //print(currentUser);
     //print(currentUser.username);
-
   }
 
   void login() {
