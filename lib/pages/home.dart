@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttershare/models/user.dart';
 import 'package:fluttershare/pages/activity_feed.dart';
 import 'package:fluttershare/pages/create_account.dart';
 import 'package:fluttershare/pages/profile.dart';
@@ -12,9 +13,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 final GoogleSignIn googleSignIn = new GoogleSignIn();
-
 final usersRef = FirebaseFirestore.instance.collection("users");
 final DateTime timestamp = DateTime.now();
+User currentUser;
 
 class Home extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isAuth = false;
+
   PageController pageController;
   int pageIndex = 0;
 
@@ -35,13 +37,13 @@ class _HomeState extends State<Home> {
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
     }, onError: (error) {
-      print("Error when signin: $error");
+      //print("Error when signin: $error");
     });
 
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
       handleSignIn(account);
     }).catchError((error) {
-      print("Error when signin: $error");
+      //print("Error when signin: $error");
     });
   }
 
@@ -54,7 +56,6 @@ class _HomeState extends State<Home> {
   handleSignIn(GoogleSignInAccount account) {
     if (account != null) {
       createUserInFirestore();
-      print("User signed in! $account");
       setState(() {
         isAuth = true;
       });
@@ -66,10 +67,11 @@ class _HomeState extends State<Home> {
   }
 
   void createUserInFirestore() async {
+
     await Firebase.initializeApp();
     final GoogleSignInAccount user = googleSignIn.currentUser;
 
-    final doc = await usersRef.doc(user.id).get();
+    DocumentSnapshot doc = await usersRef.doc(user.id).get();
 
     if (!doc.exists) {
       final username = await Navigator.push(
@@ -84,7 +86,16 @@ class _HomeState extends State<Home> {
         "bio": "",
         "timestamp": timestamp
       });
+
+      doc = await usersRef.doc(user.id).get();
+
     }
+
+    currentUser = User.fromDocument(doc);
+
+    //print(currentUser);
+    //print(currentUser.username);
+
   }
 
   void login() {
