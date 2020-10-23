@@ -57,7 +57,6 @@ class _CommentsState extends State<Comments> {
   }
 
   addComment() {
-    debugPrint("postId $postId");
     commentsRef.doc(postId).collection("comments").add({
       "username": currentUser.username,
       "comment": commentController.text,
@@ -66,6 +65,19 @@ class _CommentsState extends State<Comments> {
       "userId": currentUser.id
     });
 
+    bool isNotPostOwner = postOwnerId != currentUser.id;
+    if (isNotPostOwner) {
+      activityFeedRef.doc(postOwnerId).collection("feetItems").add({
+        "type": "comment",
+        "commentData": commentController.text,
+        "username": currentUser.username,
+        "userId": currentUser.id,
+        "userProfileImg": currentUser.photoUrl,
+        "postId": postId,
+        "mediaUrl": postMediaUrl,
+        "timestamp": timestamp
+      });
+    }
     commentController.clear();
   }
 
