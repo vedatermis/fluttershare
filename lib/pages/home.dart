@@ -8,6 +8,7 @@ import 'package:fluttershare/pages/activity_feed.dart';
 import 'package:fluttershare/pages/create_account.dart';
 import 'package:fluttershare/pages/profile.dart';
 import 'package:fluttershare/pages/search.dart';
+import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -20,6 +21,8 @@ final activityFeedRef = FirebaseFirestore.instance.collection("feed");
 
 final followersRef = FirebaseFirestore.instance.collection("followers");
 final followingRef = FirebaseFirestore.instance.collection("following");
+final timelineRef = FirebaseFirestore.instance.collection('timeline');
+
 
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final DateTime timestamp = DateTime.now();
@@ -94,6 +97,12 @@ class _HomeState extends State<Home> {
         "timestamp": timestamp
       });
 
+      await followersRef
+          .doc(user.id)
+          .collection('userFollowers')
+          .doc(user.id)
+          .set({});
+
       doc = await usersRef.doc(user.id).get();
     }
 
@@ -129,11 +138,11 @@ class _HomeState extends State<Home> {
         onPageChanged: onPageChanged,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          //Timeline(),
-          RaisedButton(
-            onPressed: logout,
-            child: Text("Logout"),
-          ),
+          Timeline(currentUser: currentUser),
+          // RaisedButton(
+          //   onPressed: logout,
+          //   child: Text("Logout"),
+          // ),
           ActivityFeed(),
           Upload(currentUser: currentUser),
           Search(),
